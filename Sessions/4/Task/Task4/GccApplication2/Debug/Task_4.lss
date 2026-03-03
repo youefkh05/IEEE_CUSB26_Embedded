@@ -1,0 +1,618 @@
+
+Task_4.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000003aa  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000003fe  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000003fe  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000430  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 000000c8  00000000  00000000  0000046c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000df5  00000000  00000000  00000534  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000871  00000000  00000000  00001329  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000085b  00000000  00000000  00001b9a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000130  00000000  00000000  000023f8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000005ac  00000000  00000000  00002528  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000056f  00000000  00000000  00002ad4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000088  00000000  00000000  00003043  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
+  64:	0c 94 d3 01 	jmp	0x3a6	; 0x3a6 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <main>:
+#include <util/delay.h>
+
+
+int main(void)
+{
+    Button_init();   
+  6c:	0e 94 e3 00 	call	0x1c6	; 0x1c6 <Button_init>
+    enable_pull_up();
+  70:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <enable_pull_up>
+
+    TrafficLight_init();
+  74:	0e 94 97 00 	call	0x12e	; 0x12e <TrafficLight_init>
+    TrafficLight_turnOffAll(); 
+  78:	0e 94 87 00 	call	0x10e	; 0x10e <TrafficLight_turnOffAll>
+
+    while(1)
+    {
+        if(!(button1_pin_id & (1 << button1_pinx)))
+  7c:	b0 99       	sbic	0x16, 0	; 22
+  7e:	44 c0       	rjmp	.+136    	; 0x108 <main+0x9c>
+        {
+            TrafficLight_ON(RED);
+  80:	80 e0       	ldi	r24, 0x00	; 0
+  82:	0e 94 a9 00 	call	0x152	; 0x152 <TrafficLight_ON>
+            for(uint16 i = 0; i < 100; i++)
+  86:	80 e0       	ldi	r24, 0x00	; 0
+  88:	90 e0       	ldi	r25, 0x00	; 0
+  8a:	09 c0       	rjmp	.+18     	; 0x9e <main+0x32>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+  8c:	b0 99       	sbic	0x16, 0	; 22
+  8e:	0a c0       	rjmp	.+20     	; 0xa4 <main+0x38>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  90:	ef e3       	ldi	r30, 0x3F	; 63
+  92:	fc e9       	ldi	r31, 0x9C	; 156
+  94:	31 97       	sbiw	r30, 0x01	; 1
+  96:	f1 f7       	brne	.-4      	; 0x94 <main+0x28>
+  98:	00 c0       	rjmp	.+0      	; 0x9a <main+0x2e>
+  9a:	00 00       	nop
+    while(1)
+    {
+        if(!(button1_pin_id & (1 << button1_pinx)))
+        {
+            TrafficLight_ON(RED);
+            for(uint16 i = 0; i < 100; i++)
+  9c:	01 96       	adiw	r24, 0x01	; 1
+  9e:	84 36       	cpi	r24, 0x64	; 100
+  a0:	91 05       	cpc	r25, r1
+  a2:	a0 f3       	brcs	.-24     	; 0x8c <main+0x20>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+                    break;
+                _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
+            }
+            TrafficLight_OFF(RED);
+  a4:	80 e0       	ldi	r24, 0x00	; 0
+  a6:	0e 94 c6 00 	call	0x18c	; 0x18c <TrafficLight_OFF>
+			
+            if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
+  aa:	b0 99       	sbic	0x16, 0	; 22
+  ac:	e7 cf       	rjmp	.-50     	; 0x7c <main+0x10>
+
+            TrafficLight_ON(YELLOW);
+  ae:	81 e0       	ldi	r24, 0x01	; 1
+  b0:	0e 94 a9 00 	call	0x152	; 0x152 <TrafficLight_ON>
+            for(uint16 i = 0; i < 50; i++)
+  b4:	80 e0       	ldi	r24, 0x00	; 0
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	09 c0       	rjmp	.+18     	; 0xcc <main+0x60>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+  ba:	b0 99       	sbic	0x16, 0	; 22
+  bc:	0a c0       	rjmp	.+20     	; 0xd2 <main+0x66>
+  be:	ef e3       	ldi	r30, 0x3F	; 63
+  c0:	fc e9       	ldi	r31, 0x9C	; 156
+  c2:	31 97       	sbiw	r30, 0x01	; 1
+  c4:	f1 f7       	brne	.-4      	; 0xc2 <main+0x56>
+  c6:	00 c0       	rjmp	.+0      	; 0xc8 <main+0x5c>
+  c8:	00 00       	nop
+            TrafficLight_OFF(RED);
+			
+            if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
+
+            TrafficLight_ON(YELLOW);
+            for(uint16 i = 0; i < 50; i++)
+  ca:	01 96       	adiw	r24, 0x01	; 1
+  cc:	82 33       	cpi	r24, 0x32	; 50
+  ce:	91 05       	cpc	r25, r1
+  d0:	a0 f3       	brcs	.-24     	; 0xba <main+0x4e>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+                    break;
+                _delay_ms(10);		// 50 iterations * 10ms = 500ms delay
+            }
+            TrafficLight_OFF(YELLOW);
+  d2:	81 e0       	ldi	r24, 0x01	; 1
+  d4:	0e 94 c6 00 	call	0x18c	; 0x18c <TrafficLight_OFF>
+
+            if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
+  d8:	b0 99       	sbic	0x16, 0	; 22
+  da:	d0 cf       	rjmp	.-96     	; 0x7c <main+0x10>
+
+            TrafficLight_ON(GREEN);
+  dc:	82 e0       	ldi	r24, 0x02	; 2
+  de:	0e 94 a9 00 	call	0x152	; 0x152 <TrafficLight_ON>
+            for(uint16 i = 0; i < 100; i++)
+  e2:	80 e0       	ldi	r24, 0x00	; 0
+  e4:	90 e0       	ldi	r25, 0x00	; 0
+  e6:	09 c0       	rjmp	.+18     	; 0xfa <main+0x8e>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+  e8:	b0 99       	sbic	0x16, 0	; 22
+  ea:	0a c0       	rjmp	.+20     	; 0x100 <main+0x94>
+  ec:	ef e3       	ldi	r30, 0x3F	; 63
+  ee:	fc e9       	ldi	r31, 0x9C	; 156
+  f0:	31 97       	sbiw	r30, 0x01	; 1
+  f2:	f1 f7       	brne	.-4      	; 0xf0 <main+0x84>
+  f4:	00 c0       	rjmp	.+0      	; 0xf6 <main+0x8a>
+  f6:	00 00       	nop
+            TrafficLight_OFF(YELLOW);
+
+            if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
+
+            TrafficLight_ON(GREEN);
+            for(uint16 i = 0; i < 100; i++)
+  f8:	01 96       	adiw	r24, 0x01	; 1
+  fa:	84 36       	cpi	r24, 0x64	; 100
+  fc:	91 05       	cpc	r25, r1
+  fe:	a0 f3       	brcs	.-24     	; 0xe8 <main+0x7c>
+            {
+                if(button1_pin_id & (1 << button1_pinx)) 
+                    break;
+                _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
+            }
+            TrafficLight_OFF(GREEN);
+ 100:	82 e0       	ldi	r24, 0x02	; 2
+ 102:	0e 94 c6 00 	call	0x18c	; 0x18c <TrafficLight_OFF>
+ 106:	ba cf       	rjmp	.-140    	; 0x7c <main+0x10>
+        }
+        else
+        {
+            TrafficLight_turnOffAll(); 
+ 108:	0e 94 87 00 	call	0x10e	; 0x10e <TrafficLight_turnOffAll>
+ 10c:	b7 cf       	rjmp	.-146    	; 0x7c <main+0x10>
+
+0000010e <TrafficLight_turnOffAll>:
+        }
+}
+			
+void TrafficLight_turnOffAll(void)
+{
+	GPIO_writePin(TRAFFIC_PORT, TRAFFIC_RED_PIN, LOGIC_LOW);
+ 10e:	40 e0       	ldi	r20, 0x00	; 0
+ 110:	60 e0       	ldi	r22, 0x00	; 0
+ 112:	83 e0       	ldi	r24, 0x03	; 3
+ 114:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+	GPIO_writePin(TRAFFIC_PORT, TRAFFIC_YELLOW_PIN, LOGIC_LOW);
+ 118:	40 e0       	ldi	r20, 0x00	; 0
+ 11a:	61 e0       	ldi	r22, 0x01	; 1
+ 11c:	83 e0       	ldi	r24, 0x03	; 3
+ 11e:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+	GPIO_writePin(TRAFFIC_PORT, TRAFFIC_GREEN_PIN, LOGIC_LOW);
+ 122:	40 e0       	ldi	r20, 0x00	; 0
+ 124:	62 e0       	ldi	r22, 0x02	; 2
+ 126:	83 e0       	ldi	r24, 0x03	; 3
+ 128:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+ 12c:	08 95       	ret
+
+0000012e <TrafficLight_init>:
+
+#include "traffic_light.h"
+
+void TrafficLight_init(void)
+{
+	GPIO_setupPinDirection(TRAFFIC_PORT, TRAFFIC_RED_PIN, PIN_OUTPUT);
+ 12e:	41 e0       	ldi	r20, 0x01	; 1
+ 130:	60 e0       	ldi	r22, 0x00	; 0
+ 132:	83 e0       	ldi	r24, 0x03	; 3
+ 134:	0e 94 ed 00 	call	0x1da	; 0x1da <GPIO_setupPinDirection>
+	GPIO_setupPinDirection(TRAFFIC_PORT, TRAFFIC_YELLOW_PIN, PIN_OUTPUT);
+ 138:	41 e0       	ldi	r20, 0x01	; 1
+ 13a:	61 e0       	ldi	r22, 0x01	; 1
+ 13c:	83 e0       	ldi	r24, 0x03	; 3
+ 13e:	0e 94 ed 00 	call	0x1da	; 0x1da <GPIO_setupPinDirection>
+	GPIO_setupPinDirection(TRAFFIC_PORT, TRAFFIC_GREEN_PIN, PIN_OUTPUT);
+ 142:	41 e0       	ldi	r20, 0x01	; 1
+ 144:	62 e0       	ldi	r22, 0x02	; 2
+ 146:	83 e0       	ldi	r24, 0x03	; 3
+ 148:	0e 94 ed 00 	call	0x1da	; 0x1da <GPIO_setupPinDirection>
+	
+	TrafficLight_turnOffAll();
+ 14c:	0e 94 87 00 	call	0x10e	; 0x10e <TrafficLight_turnOffAll>
+ 150:	08 95       	ret
+
+00000152 <TrafficLight_ON>:
+}
+
+
+void TrafficLight_ON(TrafficLight_Color color)
+{
+ 152:	cf 93       	push	r28
+ 154:	c8 2f       	mov	r28, r24
+	TrafficLight_turnOffAll();
+ 156:	0e 94 87 00 	call	0x10e	; 0x10e <TrafficLight_turnOffAll>
+	
+	   switch(color)
+ 15a:	c1 30       	cpi	r28, 0x01	; 1
+ 15c:	51 f0       	breq	.+20     	; 0x172 <TrafficLight_ON+0x20>
+ 15e:	18 f0       	brcs	.+6      	; 0x166 <TrafficLight_ON+0x14>
+ 160:	c2 30       	cpi	r28, 0x02	; 2
+ 162:	69 f0       	breq	.+26     	; 0x17e <TrafficLight_ON+0x2c>
+ 164:	11 c0       	rjmp	.+34     	; 0x188 <TrafficLight_ON+0x36>
+	   {
+		   case RED:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_RED_PIN, LOGIC_HIGH);
+ 166:	41 e0       	ldi	r20, 0x01	; 1
+ 168:	60 e0       	ldi	r22, 0x00	; 0
+ 16a:	83 e0       	ldi	r24, 0x03	; 3
+ 16c:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+ 170:	0b c0       	rjmp	.+22     	; 0x188 <TrafficLight_ON+0x36>
+		   case YELLOW:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_YELLOW_PIN, LOGIC_HIGH);
+ 172:	41 e0       	ldi	r20, 0x01	; 1
+ 174:	61 e0       	ldi	r22, 0x01	; 1
+ 176:	83 e0       	ldi	r24, 0x03	; 3
+ 178:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+ 17c:	05 c0       	rjmp	.+10     	; 0x188 <TrafficLight_ON+0x36>
+		   case GREEN:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_GREEN_PIN, LOGIC_HIGH);
+ 17e:	41 e0       	ldi	r20, 0x01	; 1
+ 180:	62 e0       	ldi	r22, 0x02	; 2
+ 182:	83 e0       	ldi	r24, 0x03	; 3
+ 184:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+		   default:
+            // Do nothing
+            break;
+        }
+}
+ 188:	cf 91       	pop	r28
+ 18a:	08 95       	ret
+
+0000018c <TrafficLight_OFF>:
+
+void TrafficLight_OFF(TrafficLight_Color color)
+{
+ 18c:	cf 93       	push	r28
+ 18e:	c8 2f       	mov	r28, r24
+	TrafficLight_turnOffAll();
+ 190:	0e 94 87 00 	call	0x10e	; 0x10e <TrafficLight_turnOffAll>
+	
+	   switch(color)
+ 194:	c1 30       	cpi	r28, 0x01	; 1
+ 196:	51 f0       	breq	.+20     	; 0x1ac <TrafficLight_OFF+0x20>
+ 198:	18 f0       	brcs	.+6      	; 0x1a0 <TrafficLight_OFF+0x14>
+ 19a:	c2 30       	cpi	r28, 0x02	; 2
+ 19c:	69 f0       	breq	.+26     	; 0x1b8 <TrafficLight_OFF+0x2c>
+ 19e:	11 c0       	rjmp	.+34     	; 0x1c2 <TrafficLight_OFF+0x36>
+	   {
+		   case RED:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_RED_PIN, LOGIC_LOW);
+ 1a0:	40 e0       	ldi	r20, 0x00	; 0
+ 1a2:	60 e0       	ldi	r22, 0x00	; 0
+ 1a4:	83 e0       	ldi	r24, 0x03	; 3
+ 1a6:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+ 1aa:	0b c0       	rjmp	.+22     	; 0x1c2 <TrafficLight_OFF+0x36>
+		   case YELLOW:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_YELLOW_PIN, LOGIC_LOW);
+ 1ac:	40 e0       	ldi	r20, 0x00	; 0
+ 1ae:	61 e0       	ldi	r22, 0x01	; 1
+ 1b0:	83 e0       	ldi	r24, 0x03	; 3
+ 1b2:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+ 1b6:	05 c0       	rjmp	.+10     	; 0x1c2 <TrafficLight_OFF+0x36>
+		   case GREEN:
+		   GPIO_writePin(TRAFFIC_PORT, TRAFFIC_GREEN_PIN, LOGIC_LOW);
+ 1b8:	40 e0       	ldi	r20, 0x00	; 0
+ 1ba:	62 e0       	ldi	r22, 0x02	; 2
+ 1bc:	83 e0       	ldi	r24, 0x03	; 3
+ 1be:	0e 94 60 01 	call	0x2c0	; 0x2c0 <GPIO_writePin>
+		   break;
+		   default:
+            // Do nothing
+            break;
+        }
+}
+ 1c2:	cf 91       	pop	r28
+ 1c4:	08 95       	ret
+
+000001c6 <Button_init>:
+ 1c6:	88 b3       	in	r24, 0x18	; 24
+ 1c8:	40 e0       	ldi	r20, 0x00	; 0
+ 1ca:	60 e0       	ldi	r22, 0x00	; 0
+ 1cc:	0e 94 ed 00 	call	0x1da	; 0x1da <GPIO_setupPinDirection>
+ 1d0:	08 95       	ret
+
+000001d2 <enable_pull_up>:
+ 1d2:	88 b3       	in	r24, 0x18	; 24
+ 1d4:	81 60       	ori	r24, 0x01	; 1
+ 1d6:	88 bb       	out	0x18, r24	; 24
+ 1d8:	08 95       	ret
+
+000001da <GPIO_setupPinDirection>:
+ 1da:	68 30       	cpi	r22, 0x08	; 8
+ 1dc:	08 f0       	brcs	.+2      	; 0x1e0 <GPIO_setupPinDirection+0x6>
+ 1de:	6f c0       	rjmp	.+222    	; 0x2be <GPIO_setupPinDirection+0xe4>
+ 1e0:	84 30       	cpi	r24, 0x04	; 4
+ 1e2:	08 f0       	brcs	.+2      	; 0x1e6 <GPIO_setupPinDirection+0xc>
+ 1e4:	6c c0       	rjmp	.+216    	; 0x2be <GPIO_setupPinDirection+0xe4>
+ 1e6:	81 30       	cpi	r24, 0x01	; 1
+ 1e8:	01 f1       	breq	.+64     	; 0x22a <GPIO_setupPinDirection+0x50>
+ 1ea:	30 f0       	brcs	.+12     	; 0x1f8 <GPIO_setupPinDirection+0x1e>
+ 1ec:	82 30       	cpi	r24, 0x02	; 2
+ 1ee:	b1 f1       	breq	.+108    	; 0x25c <GPIO_setupPinDirection+0x82>
+ 1f0:	83 30       	cpi	r24, 0x03	; 3
+ 1f2:	09 f4       	brne	.+2      	; 0x1f6 <GPIO_setupPinDirection+0x1c>
+ 1f4:	4c c0       	rjmp	.+152    	; 0x28e <GPIO_setupPinDirection+0xb4>
+ 1f6:	08 95       	ret
+ 1f8:	41 30       	cpi	r20, 0x01	; 1
+ 1fa:	59 f4       	brne	.+22     	; 0x212 <GPIO_setupPinDirection+0x38>
+ 1fc:	2a b3       	in	r18, 0x1a	; 26
+ 1fe:	81 e0       	ldi	r24, 0x01	; 1
+ 200:	90 e0       	ldi	r25, 0x00	; 0
+ 202:	02 c0       	rjmp	.+4      	; 0x208 <GPIO_setupPinDirection+0x2e>
+ 204:	88 0f       	add	r24, r24
+ 206:	99 1f       	adc	r25, r25
+ 208:	6a 95       	dec	r22
+ 20a:	e2 f7       	brpl	.-8      	; 0x204 <GPIO_setupPinDirection+0x2a>
+ 20c:	82 2b       	or	r24, r18
+ 20e:	8a bb       	out	0x1a, r24	; 26
+ 210:	08 95       	ret
+ 212:	2a b3       	in	r18, 0x1a	; 26
+ 214:	81 e0       	ldi	r24, 0x01	; 1
+ 216:	90 e0       	ldi	r25, 0x00	; 0
+ 218:	02 c0       	rjmp	.+4      	; 0x21e <GPIO_setupPinDirection+0x44>
+ 21a:	88 0f       	add	r24, r24
+ 21c:	99 1f       	adc	r25, r25
+ 21e:	6a 95       	dec	r22
+ 220:	e2 f7       	brpl	.-8      	; 0x21a <GPIO_setupPinDirection+0x40>
+ 222:	80 95       	com	r24
+ 224:	82 23       	and	r24, r18
+ 226:	8a bb       	out	0x1a, r24	; 26
+ 228:	08 95       	ret
+ 22a:	41 30       	cpi	r20, 0x01	; 1
+ 22c:	59 f4       	brne	.+22     	; 0x244 <GPIO_setupPinDirection+0x6a>
+ 22e:	27 b3       	in	r18, 0x17	; 23
+ 230:	81 e0       	ldi	r24, 0x01	; 1
+ 232:	90 e0       	ldi	r25, 0x00	; 0
+ 234:	02 c0       	rjmp	.+4      	; 0x23a <GPIO_setupPinDirection+0x60>
+ 236:	88 0f       	add	r24, r24
+ 238:	99 1f       	adc	r25, r25
+ 23a:	6a 95       	dec	r22
+ 23c:	e2 f7       	brpl	.-8      	; 0x236 <GPIO_setupPinDirection+0x5c>
+ 23e:	82 2b       	or	r24, r18
+ 240:	87 bb       	out	0x17, r24	; 23
+ 242:	08 95       	ret
+ 244:	27 b3       	in	r18, 0x17	; 23
+ 246:	81 e0       	ldi	r24, 0x01	; 1
+ 248:	90 e0       	ldi	r25, 0x00	; 0
+ 24a:	02 c0       	rjmp	.+4      	; 0x250 <GPIO_setupPinDirection+0x76>
+ 24c:	88 0f       	add	r24, r24
+ 24e:	99 1f       	adc	r25, r25
+ 250:	6a 95       	dec	r22
+ 252:	e2 f7       	brpl	.-8      	; 0x24c <GPIO_setupPinDirection+0x72>
+ 254:	80 95       	com	r24
+ 256:	82 23       	and	r24, r18
+ 258:	87 bb       	out	0x17, r24	; 23
+ 25a:	08 95       	ret
+ 25c:	41 30       	cpi	r20, 0x01	; 1
+ 25e:	59 f4       	brne	.+22     	; 0x276 <GPIO_setupPinDirection+0x9c>
+ 260:	24 b3       	in	r18, 0x14	; 20
+ 262:	81 e0       	ldi	r24, 0x01	; 1
+ 264:	90 e0       	ldi	r25, 0x00	; 0
+ 266:	02 c0       	rjmp	.+4      	; 0x26c <GPIO_setupPinDirection+0x92>
+ 268:	88 0f       	add	r24, r24
+ 26a:	99 1f       	adc	r25, r25
+ 26c:	6a 95       	dec	r22
+ 26e:	e2 f7       	brpl	.-8      	; 0x268 <GPIO_setupPinDirection+0x8e>
+ 270:	82 2b       	or	r24, r18
+ 272:	84 bb       	out	0x14, r24	; 20
+ 274:	08 95       	ret
+ 276:	24 b3       	in	r18, 0x14	; 20
+ 278:	81 e0       	ldi	r24, 0x01	; 1
+ 27a:	90 e0       	ldi	r25, 0x00	; 0
+ 27c:	02 c0       	rjmp	.+4      	; 0x282 <GPIO_setupPinDirection+0xa8>
+ 27e:	88 0f       	add	r24, r24
+ 280:	99 1f       	adc	r25, r25
+ 282:	6a 95       	dec	r22
+ 284:	e2 f7       	brpl	.-8      	; 0x27e <GPIO_setupPinDirection+0xa4>
+ 286:	80 95       	com	r24
+ 288:	82 23       	and	r24, r18
+ 28a:	84 bb       	out	0x14, r24	; 20
+ 28c:	08 95       	ret
+ 28e:	41 30       	cpi	r20, 0x01	; 1
+ 290:	59 f4       	brne	.+22     	; 0x2a8 <GPIO_setupPinDirection+0xce>
+ 292:	21 b3       	in	r18, 0x11	; 17
+ 294:	81 e0       	ldi	r24, 0x01	; 1
+ 296:	90 e0       	ldi	r25, 0x00	; 0
+ 298:	02 c0       	rjmp	.+4      	; 0x29e <GPIO_setupPinDirection+0xc4>
+ 29a:	88 0f       	add	r24, r24
+ 29c:	99 1f       	adc	r25, r25
+ 29e:	6a 95       	dec	r22
+ 2a0:	e2 f7       	brpl	.-8      	; 0x29a <GPIO_setupPinDirection+0xc0>
+ 2a2:	82 2b       	or	r24, r18
+ 2a4:	81 bb       	out	0x11, r24	; 17
+ 2a6:	08 95       	ret
+ 2a8:	21 b3       	in	r18, 0x11	; 17
+ 2aa:	81 e0       	ldi	r24, 0x01	; 1
+ 2ac:	90 e0       	ldi	r25, 0x00	; 0
+ 2ae:	02 c0       	rjmp	.+4      	; 0x2b4 <GPIO_setupPinDirection+0xda>
+ 2b0:	88 0f       	add	r24, r24
+ 2b2:	99 1f       	adc	r25, r25
+ 2b4:	6a 95       	dec	r22
+ 2b6:	e2 f7       	brpl	.-8      	; 0x2b0 <GPIO_setupPinDirection+0xd6>
+ 2b8:	80 95       	com	r24
+ 2ba:	82 23       	and	r24, r18
+ 2bc:	81 bb       	out	0x11, r24	; 17
+ 2be:	08 95       	ret
+
+000002c0 <GPIO_writePin>:
+ 2c0:	68 30       	cpi	r22, 0x08	; 8
+ 2c2:	08 f0       	brcs	.+2      	; 0x2c6 <GPIO_writePin+0x6>
+ 2c4:	6f c0       	rjmp	.+222    	; 0x3a4 <GPIO_writePin+0xe4>
+ 2c6:	84 30       	cpi	r24, 0x04	; 4
+ 2c8:	08 f0       	brcs	.+2      	; 0x2cc <GPIO_writePin+0xc>
+ 2ca:	6c c0       	rjmp	.+216    	; 0x3a4 <GPIO_writePin+0xe4>
+ 2cc:	81 30       	cpi	r24, 0x01	; 1
+ 2ce:	01 f1       	breq	.+64     	; 0x310 <GPIO_writePin+0x50>
+ 2d0:	30 f0       	brcs	.+12     	; 0x2de <GPIO_writePin+0x1e>
+ 2d2:	82 30       	cpi	r24, 0x02	; 2
+ 2d4:	b1 f1       	breq	.+108    	; 0x342 <GPIO_writePin+0x82>
+ 2d6:	83 30       	cpi	r24, 0x03	; 3
+ 2d8:	09 f4       	brne	.+2      	; 0x2dc <GPIO_writePin+0x1c>
+ 2da:	4c c0       	rjmp	.+152    	; 0x374 <GPIO_writePin+0xb4>
+ 2dc:	08 95       	ret
+ 2de:	41 30       	cpi	r20, 0x01	; 1
+ 2e0:	59 f4       	brne	.+22     	; 0x2f8 <GPIO_writePin+0x38>
+ 2e2:	2b b3       	in	r18, 0x1b	; 27
+ 2e4:	81 e0       	ldi	r24, 0x01	; 1
+ 2e6:	90 e0       	ldi	r25, 0x00	; 0
+ 2e8:	02 c0       	rjmp	.+4      	; 0x2ee <GPIO_writePin+0x2e>
+ 2ea:	88 0f       	add	r24, r24
+ 2ec:	99 1f       	adc	r25, r25
+ 2ee:	6a 95       	dec	r22
+ 2f0:	e2 f7       	brpl	.-8      	; 0x2ea <GPIO_writePin+0x2a>
+ 2f2:	82 2b       	or	r24, r18
+ 2f4:	8b bb       	out	0x1b, r24	; 27
+ 2f6:	08 95       	ret
+ 2f8:	2b b3       	in	r18, 0x1b	; 27
+ 2fa:	81 e0       	ldi	r24, 0x01	; 1
+ 2fc:	90 e0       	ldi	r25, 0x00	; 0
+ 2fe:	02 c0       	rjmp	.+4      	; 0x304 <GPIO_writePin+0x44>
+ 300:	88 0f       	add	r24, r24
+ 302:	99 1f       	adc	r25, r25
+ 304:	6a 95       	dec	r22
+ 306:	e2 f7       	brpl	.-8      	; 0x300 <GPIO_writePin+0x40>
+ 308:	80 95       	com	r24
+ 30a:	82 23       	and	r24, r18
+ 30c:	8b bb       	out	0x1b, r24	; 27
+ 30e:	08 95       	ret
+ 310:	41 30       	cpi	r20, 0x01	; 1
+ 312:	59 f4       	brne	.+22     	; 0x32a <GPIO_writePin+0x6a>
+ 314:	28 b3       	in	r18, 0x18	; 24
+ 316:	81 e0       	ldi	r24, 0x01	; 1
+ 318:	90 e0       	ldi	r25, 0x00	; 0
+ 31a:	02 c0       	rjmp	.+4      	; 0x320 <GPIO_writePin+0x60>
+ 31c:	88 0f       	add	r24, r24
+ 31e:	99 1f       	adc	r25, r25
+ 320:	6a 95       	dec	r22
+ 322:	e2 f7       	brpl	.-8      	; 0x31c <GPIO_writePin+0x5c>
+ 324:	82 2b       	or	r24, r18
+ 326:	88 bb       	out	0x18, r24	; 24
+ 328:	08 95       	ret
+ 32a:	28 b3       	in	r18, 0x18	; 24
+ 32c:	81 e0       	ldi	r24, 0x01	; 1
+ 32e:	90 e0       	ldi	r25, 0x00	; 0
+ 330:	02 c0       	rjmp	.+4      	; 0x336 <GPIO_writePin+0x76>
+ 332:	88 0f       	add	r24, r24
+ 334:	99 1f       	adc	r25, r25
+ 336:	6a 95       	dec	r22
+ 338:	e2 f7       	brpl	.-8      	; 0x332 <GPIO_writePin+0x72>
+ 33a:	80 95       	com	r24
+ 33c:	82 23       	and	r24, r18
+ 33e:	88 bb       	out	0x18, r24	; 24
+ 340:	08 95       	ret
+ 342:	41 30       	cpi	r20, 0x01	; 1
+ 344:	59 f4       	brne	.+22     	; 0x35c <GPIO_writePin+0x9c>
+ 346:	25 b3       	in	r18, 0x15	; 21
+ 348:	81 e0       	ldi	r24, 0x01	; 1
+ 34a:	90 e0       	ldi	r25, 0x00	; 0
+ 34c:	02 c0       	rjmp	.+4      	; 0x352 <GPIO_writePin+0x92>
+ 34e:	88 0f       	add	r24, r24
+ 350:	99 1f       	adc	r25, r25
+ 352:	6a 95       	dec	r22
+ 354:	e2 f7       	brpl	.-8      	; 0x34e <GPIO_writePin+0x8e>
+ 356:	82 2b       	or	r24, r18
+ 358:	85 bb       	out	0x15, r24	; 21
+ 35a:	08 95       	ret
+ 35c:	25 b3       	in	r18, 0x15	; 21
+ 35e:	81 e0       	ldi	r24, 0x01	; 1
+ 360:	90 e0       	ldi	r25, 0x00	; 0
+ 362:	02 c0       	rjmp	.+4      	; 0x368 <GPIO_writePin+0xa8>
+ 364:	88 0f       	add	r24, r24
+ 366:	99 1f       	adc	r25, r25
+ 368:	6a 95       	dec	r22
+ 36a:	e2 f7       	brpl	.-8      	; 0x364 <GPIO_writePin+0xa4>
+ 36c:	80 95       	com	r24
+ 36e:	82 23       	and	r24, r18
+ 370:	85 bb       	out	0x15, r24	; 21
+ 372:	08 95       	ret
+ 374:	41 30       	cpi	r20, 0x01	; 1
+ 376:	59 f4       	brne	.+22     	; 0x38e <GPIO_writePin+0xce>
+ 378:	22 b3       	in	r18, 0x12	; 18
+ 37a:	81 e0       	ldi	r24, 0x01	; 1
+ 37c:	90 e0       	ldi	r25, 0x00	; 0
+ 37e:	02 c0       	rjmp	.+4      	; 0x384 <GPIO_writePin+0xc4>
+ 380:	88 0f       	add	r24, r24
+ 382:	99 1f       	adc	r25, r25
+ 384:	6a 95       	dec	r22
+ 386:	e2 f7       	brpl	.-8      	; 0x380 <GPIO_writePin+0xc0>
+ 388:	82 2b       	or	r24, r18
+ 38a:	82 bb       	out	0x12, r24	; 18
+ 38c:	08 95       	ret
+ 38e:	22 b3       	in	r18, 0x12	; 18
+ 390:	81 e0       	ldi	r24, 0x01	; 1
+ 392:	90 e0       	ldi	r25, 0x00	; 0
+ 394:	02 c0       	rjmp	.+4      	; 0x39a <GPIO_writePin+0xda>
+ 396:	88 0f       	add	r24, r24
+ 398:	99 1f       	adc	r25, r25
+ 39a:	6a 95       	dec	r22
+ 39c:	e2 f7       	brpl	.-8      	; 0x396 <GPIO_writePin+0xd6>
+ 39e:	80 95       	com	r24
+ 3a0:	82 23       	and	r24, r18
+ 3a2:	82 bb       	out	0x12, r24	; 18
+ 3a4:	08 95       	ret
+
+000003a6 <_exit>:
+ 3a6:	f8 94       	cli
+
+000003a8 <__stop_program>:
+ 3a8:	ff cf       	rjmp	.-2      	; 0x3a8 <__stop_program>
