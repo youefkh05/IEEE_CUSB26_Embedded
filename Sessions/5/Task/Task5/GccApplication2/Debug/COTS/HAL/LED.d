@@ -1,4 +1,7 @@
 COTS/HAL/LED.d COTS/HAL/LED.o: ../COTS/HAL/LED.c ../COTS/HAL/LED.h \
+ ../COTS/HAL/../LIB/BIT_MATH.h ../COTS/HAL/../MCAL/GPIO.h \
+ ../COTS/HAL/../MCAL/../LIB/BIT_MATH.h \
+ ../COTS/HAL/../MCAL/../LIB/std_types.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -10,13 +13,17 @@ COTS/HAL/LED.d COTS/HAL/LED.o: ../COTS/HAL/LED.c ../COTS/HAL/LED.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../COTS/HAL/../MCAL/gpio.h ../COTS/HAL/../MCAL/../LIB/BIT_MATH.h \
- ../COTS/HAL/../MCAL/../LIB/std_types.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
+ ../COTS/HAL/../MCAL/gpio.h
 
 ../COTS/HAL/LED.h:
+
+../COTS/HAL/../LIB/BIT_MATH.h:
+
+../COTS/HAL/../MCAL/GPIO.h:
+
+../COTS/HAL/../MCAL/../LIB/BIT_MATH.h:
+
+../COTS/HAL/../MCAL/../LIB/std_types.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -41,13 +48,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 ../COTS/HAL/../MCAL/gpio.h:
-
-../COTS/HAL/../MCAL/../LIB/BIT_MATH.h:
-
-../COTS/HAL/../MCAL/../LIB/std_types.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:

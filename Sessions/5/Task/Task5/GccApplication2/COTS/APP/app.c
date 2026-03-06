@@ -21,13 +21,29 @@ int main(void)
     TrafficLight_turnOffAll(); 
 	
 	LCD_init();
-	LCD_displayStringRowColumn(1,6," IEEE");
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"IEEE");
 	_delay_ms(3000);
+	
+	uint8_t LCD_flag = 0; //to know when to update the LCD
+		
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(1,0,"System Off");
+
 
     while(1)
     {
         if(!(button1_pin_id & (1 << button1_pinx)))
         {
+			if(LCD_flag==0)	//it was OFF
+			{
+				LCD_flag=1;
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(1,6," System ON");
+				LCD_displayStringRowColumn(2,10," System ON");
+
+			}
+			
             TrafficLight_ON(RED);
             for(uint16 i = 0; i < 100; i++)
             {
@@ -61,7 +77,13 @@ int main(void)
         }
         else
         {
-            TrafficLight_turnOffAll(); 
+            TrafficLight_turnOffAll();
+			if(LCD_flag==1)	//it was ON
+			{
+				LCD_flag=0;
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(1,6," System Off");
+			}
         }
     }
 }

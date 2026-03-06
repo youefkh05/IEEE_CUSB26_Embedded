@@ -29,6 +29,29 @@ typedef unsigned char boolean;
 
 #define NULL_PTR    ((void*)0)
 
+#define Null (void*)0
+#define NULL (void*)0
+
+#define Disable    0
+#define Enable     1
+
+#define OFF        0
+#define ON         1
+
+#define Input      0
+#define Output     1
+
+#define  Low       0
+#define  High      1
+
+#define  MaxByte         0xFF
+#define  MaxWordByte     0xFFFF
+#define  MaxDWordByte    0xFFFFFFFF
+
+#define  MinByte         0x00
+#define  MinWordByte     0x0000
+#define  MinDWordByte    0x00000000
+
 typedef unsigned char         uint8;          /*           0 .. 255              */
 typedef signed char           sint8;          /*        -128 .. +127             */
 typedef unsigned short        uint16;         /*           0 .. 65535            */

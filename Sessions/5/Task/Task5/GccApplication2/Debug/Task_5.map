@@ -52,8 +52,6 @@ Discarded input sections
  .bss           0x00000000        0x0 COTS/HAL/lcd.o
  .text.LCD_intgerToString
                 0x00000000       0x3c COTS/HAL/lcd.o
- .text.LCD_clearScreen
-                0x00000000        0x8 COTS/HAL/lcd.o
  .text          0x00000000        0x0 COTS/HAL/LED.o
  .data          0x00000000        0x0 COTS/HAL/LED.o
  .bss           0x00000000        0x0 COTS/HAL/LED.o
@@ -282,7 +280,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x74c
+.text           0x00000000      0x76c
  *(.vectors)
  .vectors       0x00000000       0x54 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32/avr5/crtatmega32.o
                 0x00000000                __vector_default
@@ -362,55 +360,58 @@ END GROUP
                 0x0000007e                __vector_20
                 0x00000082                . = ALIGN (0x2)
  *(.text.*)
- .text.main     0x00000082       0xc8 COTS/APP/app.o
+ .text.main     0x00000082      0x128 COTS/APP/app.o
                 0x00000082                main
  .text.TrafficLight_turnOffAll
-                0x0000014a       0x20 COTS/APP/traffic_light.o
-                0x0000014a                TrafficLight_turnOffAll
+                0x000001aa       0x20 COTS/APP/traffic_light.o
+                0x000001aa                TrafficLight_turnOffAll
  .text.TrafficLight_init
-                0x0000016a       0x24 COTS/APP/traffic_light.o
-                0x0000016a                TrafficLight_init
+                0x000001ca       0x24 COTS/APP/traffic_light.o
+                0x000001ca                TrafficLight_init
  .text.TrafficLight_ON
-                0x0000018e       0x3a COTS/APP/traffic_light.o
-                0x0000018e                TrafficLight_ON
+                0x000001ee       0x3a COTS/APP/traffic_light.o
+                0x000001ee                TrafficLight_ON
  .text.TrafficLight_OFF
-                0x000001c8       0x3a COTS/APP/traffic_light.o
-                0x000001c8                TrafficLight_OFF
+                0x00000228       0x3a COTS/APP/traffic_light.o
+                0x00000228                TrafficLight_OFF
  .text.Button_init
-                0x00000202        0xc COTS/HAL/Button.o
-                0x00000202                Button_init
+                0x00000262        0xc COTS/HAL/Button.o
+                0x00000262                Button_init
  .text.enable_pull_up
-                0x0000020e        0x8 COTS/HAL/Button.o
-                0x0000020e                enable_pull_up
+                0x0000026e        0x8 COTS/HAL/Button.o
+                0x0000026e                enable_pull_up
  .text.LCD_sendCommand
-                0x00000216      0x14a COTS/HAL/lcd.o
-                0x00000216                LCD_sendCommand
+                0x00000276      0x132 COTS/HAL/lcd.o
+                0x00000276                LCD_sendCommand
  .text.LCD_init
-                0x00000360       0x68 COTS/HAL/lcd.o
-                0x00000360                LCD_init
+                0x000003a8       0x74 COTS/HAL/lcd.o
+                0x000003a8                LCD_init
  .text.LCD_displayCharacter
-                0x000003c8      0x14a COTS/HAL/lcd.o
-                0x000003c8                LCD_displayCharacter
+                0x0000041c      0x102 COTS/HAL/lcd.o
+                0x0000041c                LCD_displayCharacter
  .text.LCD_displayString
-                0x00000512       0x26 COTS/HAL/lcd.o
-                0x00000512                LCD_displayString
+                0x0000051e       0x26 COTS/HAL/lcd.o
+                0x0000051e                LCD_displayString
  .text.LCD_moveCursor
-                0x00000538       0x2e COTS/HAL/lcd.o
-                0x00000538                LCD_moveCursor
+                0x00000544       0x2e COTS/HAL/lcd.o
+                0x00000544                LCD_moveCursor
  .text.LCD_displayStringRowColumn
-                0x00000566       0x16 COTS/HAL/lcd.o
-                0x00000566                LCD_displayStringRowColumn
+                0x00000572       0x16 COTS/HAL/lcd.o
+                0x00000572                LCD_displayStringRowColumn
+ .text.LCD_clearScreen
+                0x00000588       0x14 COTS/HAL/lcd.o
+                0x00000588                LCD_clearScreen
  .text.GPIO_setupPinDirection
-                0x0000057c       0xe6 COTS/MCAL/GPIO.o
-                0x0000057c                GPIO_setupPinDirection
+                0x0000059c       0xe6 COTS/MCAL/GPIO.o
+                0x0000059c                GPIO_setupPinDirection
  .text.GPIO_writePin
-                0x00000662       0xe6 COTS/MCAL/GPIO.o
-                0x00000662                GPIO_writePin
-                0x00000748                . = ALIGN (0x2)
+                0x00000682       0xe6 COTS/MCAL/GPIO.o
+                0x00000682                GPIO_writePin
+                0x00000768                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000748        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000748                _exit
-                0x00000748                exit
+ .fini9         0x00000768        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000768                _exit
+                0x00000768                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -429,11 +430,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000748        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000768        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000074c                _etext = .
+                0x0000076c                _etext = .
 
-.data           0x00800060        0x6 load address 0x0000074c
+.data           0x00800060       0x1c load address 0x0000076c
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -441,26 +442,27 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800060        0x6 COTS/APP/app.o
+                0x00800060       0x1c COTS/APP/app.o
+                                 0x27 (size before relaxing)
  *(.gnu.linkonce.r*)
-                0x00800066                . = ALIGN (0x2)
-                0x00800066                _edata = .
-                0x00800066                PROVIDE (__data_end, .)
+                0x0080007c                . = ALIGN (0x2)
+                0x0080007c                _edata = .
+                0x0080007c                PROVIDE (__data_end, .)
 
-.bss            0x00800066        0x0
+.bss            0x0080007c        0x0
                 [!provide]                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x0000074c                __data_load_start = LOADADDR (.data)
-                0x00000752                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000076c                __data_load_start = LOADADDR (.data)
+                0x00000788                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800066        0x0
+.noinit         0x0080007c        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800066                _end = .
+                0x0080007c                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -545,32 +547,32 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x192e
+.debug_info     0x00000000     0x19f0
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_info    0x000004e6      0x3a8 COTS/APP/app.o
- .debug_info    0x0000088e      0x2d0 COTS/APP/traffic_light.o
- .debug_info    0x00000b5e       0xf4 COTS/HAL/Button.o
- .debug_info    0x00000c52      0xa85 COTS/HAL/lcd.o
- .debug_info    0x000016d7      0x257 COTS/MCAL/GPIO.o
+ .debug_info    0x000004e6      0x4b5 COTS/APP/app.o
+ .debug_info    0x0000099b      0x2d0 COTS/APP/traffic_light.o
+ .debug_info    0x00000c6b       0xf4 COTS/HAL/Button.o
+ .debug_info    0x00000d5f      0xa3a COTS/HAL/lcd.o
+ .debug_info    0x00001799      0x257 COTS/MCAL/GPIO.o
 
-.debug_abbrev   0x00000000      0xa68
+.debug_abbrev   0x00000000      0xa8e
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x4a3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_abbrev  0x000004a3      0x173 COTS/APP/app.o
- .debug_abbrev  0x00000616       0xde COTS/APP/traffic_light.o
- .debug_abbrev  0x000006f4       0xac COTS/HAL/Button.o
- .debug_abbrev  0x000007a0      0x1b3 COTS/HAL/lcd.o
- .debug_abbrev  0x00000953      0x115 COTS/MCAL/GPIO.o
+ .debug_abbrev  0x000004a3      0x172 COTS/APP/app.o
+ .debug_abbrev  0x00000615       0xde COTS/APP/traffic_light.o
+ .debug_abbrev  0x000006f3       0xac COTS/HAL/Button.o
+ .debug_abbrev  0x0000079f      0x1da COTS/HAL/lcd.o
+ .debug_abbrev  0x00000979      0x115 COTS/MCAL/GPIO.o
 
-.debug_line     0x00000000      0xc56
+.debug_line     0x00000000      0xc85
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x116 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_line    0x00000116      0x245 COTS/APP/app.o
- .debug_line    0x0000035b      0x135 COTS/APP/traffic_light.o
- .debug_line    0x00000490       0xde COTS/HAL/Button.o
- .debug_line    0x0000056e      0x3e3 COTS/HAL/lcd.o
- .debug_line    0x00000951      0x305 COTS/MCAL/GPIO.o
+ .debug_line    0x00000116      0x293 COTS/APP/app.o
+ .debug_line    0x000003a9      0x135 COTS/APP/traffic_light.o
+ .debug_line    0x000004de       0xde COTS/HAL/Button.o
+ .debug_line    0x000005bc      0x3c4 COTS/HAL/lcd.o
+ .debug_line    0x00000980      0x305 COTS/MCAL/GPIO.o
 
 .debug_frame    0x00000000      0x200
  *(.debug_frame)
@@ -580,26 +582,26 @@ END GROUP
  .debug_frame   0x000000bc       0xd0 COTS/HAL/lcd.o
  .debug_frame   0x0000018c       0x74 COTS/MCAL/GPIO.o
 
-.debug_str      0x00000000      0x6e7
+.debug_str      0x00000000      0x617
  *(.debug_str)
  .debug_str     0x00000000      0x196 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_str     0x00000196      0x272 COTS/APP/app.o
-                                0x2a6 (size before relaxing)
- .debug_str     0x00000408       0xd8 COTS/APP/traffic_light.o
+ .debug_str     0x00000196      0x28b COTS/APP/app.o
+                                0x2bf (size before relaxing)
+ .debug_str     0x00000421       0x6f COTS/APP/traffic_light.o
                                 0x26c (size before relaxing)
- .debug_str     0x000004e0       0x94 COTS/HAL/Button.o
-                                0x21f (size before relaxing)
- .debug_str     0x00000574       0xb4 COTS/HAL/lcd.o
-                                0x300 (size before relaxing)
- .debug_str     0x00000628       0xbf COTS/MCAL/GPIO.o
-                                0x2c8 (size before relaxing)
+ .debug_str     0x00000490       0x15 COTS/HAL/Button.o
+                                0x209 (size before relaxing)
+ .debug_str     0x000004a5       0xb3 COTS/HAL/lcd.o
+                                0x30f (size before relaxing)
+ .debug_str     0x00000558       0xbf COTS/MCAL/GPIO.o
+                                0x2b2 (size before relaxing)
 
-.debug_loc      0x00000000      0xc40
+.debug_loc      0x00000000      0xb38
  *(.debug_loc)
- .debug_loc     0x00000000      0x144 COTS/APP/app.o
- .debug_loc     0x00000144       0x9c COTS/APP/traffic_light.o
- .debug_loc     0x000001e0      0x6d1 COTS/HAL/lcd.o
- .debug_loc     0x000008b1      0x38f COTS/MCAL/GPIO.o
+ .debug_loc     0x00000000      0x1ce COTS/APP/app.o
+ .debug_loc     0x000001ce       0x9c COTS/APP/traffic_light.o
+ .debug_loc     0x0000026a      0x53f COTS/HAL/lcd.o
+ .debug_loc     0x000007a9      0x38f COTS/MCAL/GPIO.o
 
 .debug_macinfo
  *(.debug_macinfo)
