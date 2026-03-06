@@ -11,6 +11,11 @@
 
 #include <util/delay.h>
 
+#define LED_COLMN	0
+#define LED_RAW		1
+#define LED_PERIOD  100
+#define KEY_COLMN	8
+#define KEY_RAW		1
 
 int main(void)
 {
@@ -22,6 +27,7 @@ int main(void)
 	
 	LCD_init();
 	LCD_clearScreen();
+
 	LCD_displayStringRowColumn(0,0,"IEEE");
 	_delay_ms(3000);
 	
@@ -29,6 +35,14 @@ int main(void)
 		
 	LCD_clearScreen();
 	LCD_displayStringRowColumn(1,0,"System Off");
+	
+	//init the empty space
+	char Led_space[KEY_COLMN+1];
+	for (int i=0; i<=KEY_COLMN; i++)
+	{
+		Led_space[i]=' ';
+	}
+	Led_space[KEY_COLMN+1] = '\0';
 
 
     while(1)
@@ -39,13 +53,15 @@ int main(void)
 			{
 				LCD_flag=1;
 				LCD_clearScreen();
-				LCD_displayStringRowColumn(1,6," System ON");
-				LCD_displayStringRowColumn(2,10," System ON");
-
+				LCD_displayStringRowColumn(0,0,"System ON");
+				LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
 			}
 			
             TrafficLight_ON(RED);
-            for(uint16 i = 0; i < 100; i++)
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,"RED");
+
+            for(uint16 i = 0; i < LED_PERIOD; i++)
             {
                 if(button1_pin_id & (1 << button1_pinx)) 
                     break;
@@ -56,18 +72,24 @@ int main(void)
             if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
 
             TrafficLight_ON(YELLOW);
-            for(uint16 i = 0; i < 50; i++)
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,"YELLOW");
+			
+            for(uint16 i = 0; i < LED_PERIOD; i++)
             {
                 if(button1_pin_id & (1 << button1_pinx)) 
                     break;
-                _delay_ms(10);		// 50 iterations * 10ms = 500ms delay
+                _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
             }
             TrafficLight_OFF(YELLOW);
 
             if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
 
             TrafficLight_ON(GREEN);
-            for(uint16 i = 0; i < 100; i++)
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,"GREEN");
+			
+            for(uint16 i = 0; i < LED_PERIOD; i++)
             {
                 if(button1_pin_id & (1 << button1_pinx)) 
                     break;
@@ -82,7 +104,7 @@ int main(void)
 			{
 				LCD_flag=0;
 				LCD_clearScreen();
-				LCD_displayStringRowColumn(1,6," System Off");
+				LCD_displayStringRowColumn(0,0,"System Off");
 			}
         }
     }

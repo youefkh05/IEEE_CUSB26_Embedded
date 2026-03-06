@@ -57,6 +57,9 @@ void LCD_init(void)
 	LCD_sendCommand(LCD_CURSOR_OFF); /* cursor off */
 	LCD_sendCommand(LCD_CLEAR_COMMAND); /* clear LCD at the beginning */
 	_delay_ms(2);
+	//init
+	LCD_displayStringRowColumn(0,0,"I");
+
 }
 
 /*
@@ -65,74 +68,80 @@ void LCD_init(void)
  */
 void LCD_sendCommand(uint8 command)
 {
-	GPIO_writePin(LCD_RS_PORT_ID, LCD_RS_PIN_ID, LOGIC_LOW);
+	GPIO_writePin(LCD_RS_PORT_ID,LCD_RS_PIN_ID,LOGIC_LOW); /* Instruction Mode RS=0 */
+	_delay_ms(1); /* delay for processing Tas = 50ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH); /* Enable LCD E=1 */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
 
-	#if(LCD_DATA_BITS_MODE == 4)
-
-	/* Send High Nibble */
+#if(LCD_DATA_BITS_MODE == 4)
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB4_PIN_ID,GET_BIT(command,4));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB5_PIN_ID,GET_BIT(command,5));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB6_PIN_ID,GET_BIT(command,6));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB7_PIN_ID,GET_BIT(command,7));
-	
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
-	_delay_us(5);
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH);
-	_delay_us(5);
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
-	_delay_us(50);
 
-	/* Send Low Nibble */
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH); /* Enable LCD E=1 */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
+
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB4_PIN_ID,GET_BIT(command,0));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB5_PIN_ID,GET_BIT(command,1));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB6_PIN_ID,GET_BIT(command,2));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB7_PIN_ID,GET_BIT(command,3));
 
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH);
-	_delay_us(1);
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
 
-	#endif
-
-	if(command == LCD_CLEAR_COMMAND || command == LCD_GO_TO_HOME)
-	_delay_ms(2);
-	else
-	_delay_us(50);
+#elif(LCD_DATA_BITS_MODE == 8)
+	GPIO_writePort(LCD_DATA_PORT_ID,command); /* out the required command to the data bus D0 --> D7 */
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
+#endif
 }
+
 /*
  * Description :
  * Display the required character on the screen
  */
 void LCD_displayCharacter(uint8 data)
 {
-	GPIO_writePin(LCD_RS_PORT_ID, LCD_RS_PIN_ID, LOGIC_HIGH);
+	GPIO_writePin(LCD_RS_PORT_ID,LCD_RS_PIN_ID,LOGIC_HIGH); /* Data Mode RS=1 */
+	_delay_ms(1); /* delay for processing Tas = 50ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH); /* Enable LCD E=1 */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
 
-	#if(LCD_DATA_BITS_MODE == 4)
-
-	/* Send high nibble */
+#if(LCD_DATA_BITS_MODE == 4)
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB4_PIN_ID,GET_BIT(data,4));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB5_PIN_ID,GET_BIT(data,5));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB6_PIN_ID,GET_BIT(data,6));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB7_PIN_ID,GET_BIT(data,7));
 
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH);
-	_delay_us(1);
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH); /* Enable LCD E=1 */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
 
-	/* Send low nibble */
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB4_PIN_ID,GET_BIT(data,0));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB5_PIN_ID,GET_BIT(data,1));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB6_PIN_ID,GET_BIT(data,2));
 	GPIO_writePin(LCD_DATA_PORT_ID,LCD_DB7_PIN_ID,GET_BIT(data,3));
 
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_HIGH);
-	_delay_us(1);
-	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
 
-	#endif
-
-	_delay_us(50);
+#elif(LCD_DATA_BITS_MODE == 8)
+	GPIO_writePort(LCD_DATA_PORT_ID,data); /* out the required command to the data bus D0 --> D7 */
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
+	GPIO_writePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW); /* Disable LCD E=0 */
+	_delay_ms(1); /* delay for processing Th = 13ns */
+#endif
 }
+
 /*
  * Description :
  * Display the required string on the screen
@@ -140,6 +149,8 @@ void LCD_displayCharacter(uint8 data)
 void LCD_displayString(const char *Str)
 {
 	uint8 i = 0;
+	//LCD_displayCharacter(Str[i]);
+
 	while(Str[i] != '\0')
 	{
 		LCD_displayCharacter(Str[i]);
@@ -209,6 +220,7 @@ void LCD_intgerToString(int data)
  */
 void LCD_clearScreen(void)
 {
-	LCD_sendCommand(LCD_CLEAR_COMMAND);
-	_delay_ms(2);   // required for clear command
+	LCD_sendCommand(LCD_CLEAR_COMMAND); /* Send clear display command */
+	LCD_displayStringRowColumn(0,0,"I");
+
 }
