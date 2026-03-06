@@ -44,9 +44,28 @@ int main(void)
 	}
 	Led_space[KEY_COLMN+1] = '\0';
 
-
+	//key pad
+	uint8_t key_pressed;
     while(1)
-    {
+    {	
+		if(KEYPAD_getPressedKey(&key_pressed))
+		{
+			_delay_ms(200);   // debounce
+
+			if(key_pressed <= 9)
+			{
+				LCD_intgerToString(key_pressed);
+			}
+			else if(key_pressed == 13)
+			{
+				LCD_clearScreen();
+			}
+			else
+			{
+				LCD_displayCharacter(key_pressed);
+			}
+		}
+
         if(!(button1_pin_id & (1 << button1_pinx)))
         {
 			if(LCD_flag==0)	//it was OFF
@@ -55,6 +74,8 @@ int main(void)
 				LCD_clearScreen();
 				LCD_displayStringRowColumn(0,0,"System ON");
 				LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+								LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+
 			}
 			
             TrafficLight_ON(RED);
