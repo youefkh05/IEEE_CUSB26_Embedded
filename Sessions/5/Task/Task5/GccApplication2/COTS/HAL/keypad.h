@@ -1,4 +1,4 @@
- /******************************************************************************
+/******************************************************************************
  *
  * Module: KEYPAD
  *
@@ -9,6 +9,7 @@
  * Author: Mohamed Magdy
  *
  *******************************************************************************/
+
 #ifndef KEYPAD_H_
 #define KEYPAD_H_
 
@@ -25,12 +26,13 @@
 #define KEYPAD_COL_PORT_ID PORTC_ID
 #define KEYPAD_FIRST_COL_PIN_ID PIN4_ID
 
+/* Button logic */
 #define KEYPAD_BUTTON_PRESSED  LOGIC_HIGH
 #define KEYPAD_BUTTON_RELEASED LOGIC_LOW
 
 /* Functions */
 void KEYPAD_init(void);
 
-boolean KEYPAD_getPressedKey(uint8 *key);
+boolean KEYPAD_getPressedKey(char *key);
 
-#endif
+#endif /* KEYPAD_H_ */

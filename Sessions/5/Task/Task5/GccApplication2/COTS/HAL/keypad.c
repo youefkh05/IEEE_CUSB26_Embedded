@@ -13,7 +13,7 @@
 #include <util/delay.h>
 
 /* Private function */
-static uint8 KEYPAD_4x4_adjustKeyNumber(uint8 button_number);
+static char KEYPAD_4x4_adjustKeyNumber(uint8 button_number);
 
 /*------------------------------------------------*/
 void KEYPAD_init(void)
@@ -48,7 +48,7 @@ void KEYPAD_init(void)
 }
 
 /*------------------------------------------------*/
-boolean KEYPAD_getPressedKey(uint8 *key)
+boolean KEYPAD_getPressedKey(char *key)
 {
 	uint8 row,col;
 
@@ -87,27 +87,27 @@ boolean KEYPAD_getPressedKey(uint8 *key)
 }
 
 /*------------------------------------------------*/
-static uint8 KEYPAD_4x4_adjustKeyNumber(uint8 button_number)
+static char KEYPAD_4x4_adjustKeyNumber(uint8 button_number)
 {
 	switch(button_number)
 	{
-		case 1: return 7;
-		case 2: return 8;
-		case 3: return 9;
+		case 1: return '7';
+		case 2: return '8';
+		case 3: return '9';
 		case 4: return '%';
 
-		case 5: return 4;
-		case 6: return 5;
-		case 7: return 6;
+		case 5: return '4';
+		case 6: return '5';
+		case 7: return '6';
 		case 8: return '*';
 
-		case 9: return 1;
-		case 10: return 2;
-		case 11: return 3;
+		case 9: return  '1';
+		case 10: return '2';
+		case 11: return '3';
 		case 12: return '-';
 
-		case 13: return 13;   // Enter
-		case 14: return 0;
+		case 13: return '@';   // Enter
+		case 14: return '0';
 		case 15: return '=';
 		case 16: return '+';
 	}

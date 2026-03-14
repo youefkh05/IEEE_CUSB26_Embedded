@@ -47,27 +47,13 @@ int main(void)
 	Led_space[KEY_COLMN] = '\0';
 
 	//key pad
-	uint8_t key_pressed;
+	char key_pressed[2];
+	key_pressed[1] = '\0';
+	
     while(1)
     {	
-		if(KEYPAD_getPressedKey(&key_pressed))
-		{
-			_delay_ms(200);   // debounce
-
-			if(key_pressed <= 9)
-			{
-				LCD_intgerToString(key_pressed);
-			}
-			else if(key_pressed == 13)
-			{
-				//LCD_clearScreen();
-			}
-			else
-			{
-				LCD_displayCharacter(key_pressed);
-			}
-		}
-	/*
+		
+	
         if(!(button1_pin_id & (1 << button1_pinx)))
         {
 			if(LCD_flag==0)	//it was OFF
@@ -80,6 +66,17 @@ int main(void)
 
 			}
 			
+			//check the keypad after the delay
+			if(KEYPAD_getPressedKey(&key_pressed[0]))
+			{
+				_delay_ms(20);   // debounce
+				// display it in the LCD in its place
+				LCD_displayStringRowColumn(KEY_RAW,KEY_COLMN,key_pressed);
+
+				
+			}
+			
+			
             TrafficLight_ON(RED);
 			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
 			LCD_displayStringRowColumn(LED_RAW,LED_COLMN,"RED");
@@ -91,6 +88,16 @@ int main(void)
                 _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
             }
             TrafficLight_OFF(RED);
+			
+			//check the keypad after the delay
+			if(KEYPAD_getPressedKey(&key_pressed[0]))
+			{
+				_delay_ms(20);   // debounce
+				// display it in the LCD in its place
+				LCD_displayStringRowColumn(KEY_RAW,KEY_COLMN,key_pressed);
+
+				
+			}
 			
             if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
 
@@ -105,6 +112,16 @@ int main(void)
                 _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
             }
             TrafficLight_OFF(YELLOW);
+			
+			//check the keypad after the delay
+			if(KEYPAD_getPressedKey(&key_pressed[0]))
+			{
+				_delay_ms(20);   // debounce
+				// display it in the LCD in its place
+				LCD_displayStringRowColumn(KEY_RAW,KEY_COLMN,key_pressed);
+
+				
+			}
 
             if(button1_pin_id & (1 << button1_pinx)) continue;		// Check if the button is OFF
 
@@ -119,6 +136,7 @@ int main(void)
                 _delay_ms(10);		// 100 iterations * 10ms = 1000ms delay
             }
             TrafficLight_OFF(GREEN);
+			
         }
         else
         {
@@ -130,7 +148,8 @@ int main(void)
 				LCD_displayStringRowColumn(0,0,"System Off");
 			}
         }
-		*/
+		
+		
     }
 	
 }
