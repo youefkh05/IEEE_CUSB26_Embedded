@@ -25,11 +25,13 @@ int main(void)
     TrafficLight_init();
     TrafficLight_turnOffAll(); 
 	
+	KEYPAD_init();
+	
 	LCD_init();
 	LCD_clearScreen();
 
 	LCD_displayStringRowColumn(0,0,"IEEE");
-	_delay_ms(3000);
+	_delay_ms(1000);
 	
 	uint8_t LCD_flag = 0; //to know when to update the LCD
 		
@@ -38,11 +40,11 @@ int main(void)
 	
 	//init the empty space
 	char Led_space[KEY_COLMN+1];
-	for (int i=0; i<=KEY_COLMN; i++)
+	for (int i=0; i<KEY_COLMN; i++)
 	{
 		Led_space[i]=' ';
 	}
-	Led_space[KEY_COLMN+1] = '\0';
+	Led_space[KEY_COLMN] = '\0';
 
 	//key pad
 	uint8_t key_pressed;
@@ -58,14 +60,14 @@ int main(void)
 			}
 			else if(key_pressed == 13)
 			{
-				LCD_clearScreen();
+				//LCD_clearScreen();
 			}
 			else
 			{
 				LCD_displayCharacter(key_pressed);
 			}
 		}
-
+	/*
         if(!(button1_pin_id & (1 << button1_pinx)))
         {
 			if(LCD_flag==0)	//it was OFF
@@ -74,7 +76,7 @@ int main(void)
 				LCD_clearScreen();
 				LCD_displayStringRowColumn(0,0,"System ON");
 				LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
-								LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
+				LCD_displayStringRowColumn(LED_RAW,LED_COLMN,Led_space);
 
 			}
 			
@@ -128,6 +130,8 @@ int main(void)
 				LCD_displayStringRowColumn(0,0,"System Off");
 			}
         }
+		*/
     }
+	
 }
 

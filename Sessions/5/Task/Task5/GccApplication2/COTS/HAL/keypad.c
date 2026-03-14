@@ -29,15 +29,21 @@ void KEYPAD_init(void)
 
 		GPIO_writePin(KEYPAD_ROW_PORT_ID,
 		KEYPAD_FIRST_ROW_PIN_ID+i,
-		LOGIC_HIGH);
+		KEYPAD_BUTTON_RELEASED);
 	}
 
-	/* Columns as input with pullup */
+	/* Columns as input with pull DOWN */
 	for(i=0;i<KEYPAD_NUM_COLS;i++)
 	{
 		GPIO_setupPinDirection(KEYPAD_COL_PORT_ID,
 		KEYPAD_FIRST_COL_PIN_ID+i,
 		PIN_INPUT);
+		
+		_delay_us(5);
+
+		GPIO_writePin(KEYPAD_COL_PORT_ID,
+		KEYPAD_FIRST_COL_PIN_ID+i,
+		KEYPAD_BUTTON_RELEASED);   // enable pull-up
 	}
 }
 
@@ -65,7 +71,7 @@ boolean KEYPAD_getPressedKey(uint8 *key)
 				/* deactivate row */
 				GPIO_writePin(KEYPAD_ROW_PORT_ID,
 				KEYPAD_FIRST_ROW_PIN_ID+row,
-				LOGIC_HIGH);
+				KEYPAD_BUTTON_RELEASED);
 
 				return TRUE;
 			}
@@ -74,7 +80,7 @@ boolean KEYPAD_getPressedKey(uint8 *key)
 		/* deactivate row */
 		GPIO_writePin(KEYPAD_ROW_PORT_ID,
 		KEYPAD_FIRST_ROW_PIN_ID+row,
-		LOGIC_HIGH);
+		KEYPAD_BUTTON_RELEASED);
 	}
 
 	return FALSE;
