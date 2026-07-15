@@ -1,113 +1,104 @@
 /*
  * LCD_I2C.c
  *  Author: fatma foley
- */ 
+ */
 
+#include <avr/io.h>
+#include <util/delay.h>
+#include "lcd.h"
+#include "twi.h"
 
-#include "LCD_I2C.h"
+/*Generate Falling Edge*/
+void toggle() {
+	// Generate an Enable pulse (HIGH then LOW) to latch data into the LCD
+	lcd_data |= 0x02;                // Set LCD Enable pin HIGH
+	i2c_sendByte(lcd_data);          // Send updated data through I2C
 
-void toggle()
-{
-	TWDR |= 0x02;					//---PIN En de la LCD en = 1;  -----Latching data in to LCD data register using High to Low signal
-	TWCR = (1<<TWINT) | (1<<TWEN);	//---Enable I2C and clear interrupt- Esta linea y la siguiente simepre van despues de querer mandar un coamndo por TDWR
-	while  (!(TWCR &(1<<TWINT)));	//---Simepre poner despues de la linea anterior al mandar datos por TWDR
-	delay(1);
-	TWDR &= ~0x02;					//---PIN del Enable de la LCD en = 0;
-	TWCR = (1<<TWINT) | (1<<TWEN);	//---Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
+	_delay_ms(1);
+
+	lcd_data &= ~0x02;               // Set LCD Enable pin LOW to latch data
+	i2c_sendByte(lcd_data);          // Send updated data through I2C
 }
 
-void lcd_cmd_hf(char v1)
-{
-	TWDR &=~0x01;					//PIN RS de la LCD rs = 0; ----Selecting register as Command register
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR &= 0x0F;					//----clearing the Higher 4 bits
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR |= (v1 & 0xF0);			//----Masking higher 4 bits and sending to LCD
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	toggle();
-}
+void lcd_cmd_high_nibble(char MSB_data) {
+	/*OR lcd_data &=0x0E;*/
 
-void lcd_cmd(char v2)
-{
-	TWDR&=~0x01;					//rs = 0; ----Selecting register as command register
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR &= 0x0F;                   //----clearing the Higher 4 bits
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR |= (v2 & 0xF0);			//----Masking higher 4 bits and sending to LCD
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	toggle();
-	
-	TWDR &= 0x0F;                    //----clearing the Higher 4 bits
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR |= ((v2 & 0x0F)<<4);		//----Masking lower 4 bits and sending to LCD
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
+	// Select command mode (RS = 0)
+	lcd_data &= ~0x01;
+	// Clear the previous high nibble
+	lcd_data &= 0x0F;
+
+	// Load the command high nibble
+	lcd_data |= (MSB_data & 0xF0);
+	i2c_sendByte(lcd_data);
+
+	// Generate Enable pulse to latch the command
 	toggle();
 }
 
-void lcd_dwr(char v3)
+void lcd_cmd(char cmd) {
+	/* Select command mode (RS = 0) &
+	   Clear the previous high nibble*/
+	lcd_data &=0x0E;
+
+	//Send high nibble
+	lcd_data |= (cmd & 0xF0);
+	i2c_sendByte(lcd_data);
+	toggle();
+
+	// Send low nibble
+	lcd_data &= 0x0F;
+	lcd_data |= ((cmd & 0x0F) << 4);
+	i2c_sendByte(lcd_data);
+	toggle();
+}
+
+void lcd_display_data(char data)
 {
-	TWDR|=0x01;						//rs = 1; ----Selecting register as command register
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR &= 0x0F;				    //----clearing the Higher 4 bits
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR |= (v3 & 0xF0);			//----Masking higher 4 bits and sending to LCD
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	toggle();
-	
-	TWDR &= 0x0F;					//----clearing the Higher 4 bits
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	TWDR |= ((v3 & 0x0F)<<4);		//----Masking lower 4 bits and sending to LCD
-	TWCR = (1<<TWINT) | (1<<TWEN);	//Enable I2C and clear interrupt
-	while  (!(TWCR &(1<<TWINT)));
-	toggle();
+    // Select data mode (RS = 1)
+    lcd_data |= 0x01;
+
+    // Send high nibble
+    lcd_data &= 0x0F;
+    lcd_data |= (data & 0xF0);
+    i2c_sendByte(lcd_data);
+    toggle();
+
+    // Send low nibble
+    lcd_data &= 0x0F;
+    lcd_data |= ((data & 0x0F) << 4);
+    i2c_sendByte(lcd_data);
+    toggle();
 }
 
 void lcd_init()
 {
-	lcd_cmd_hf(0x30);       //-----Sequence for initializing LCD
-	lcd_cmd_hf(0x30);       //-----     "            "              "               "
-	lcd_cmd_hf(0x20);       //-----     "            "              "               "
-	lcd_cmd(0x28);          //-----Selecting 16 x 2 LCD in 4Bit mode
-	lcd_cmd(0x0C);          //-----Display ON Cursor OFF
-	lcd_cmd(0x01);          //-----Clear display
-	lcd_cmd(0x06);          //-----Cursor Auto Increment
-	lcd_cmd(0x80);          //-----1st line 1st location of LCD
+    // Initialize LCD in 8-bit mode
+    lcd_cmd_high_nibble(0x30);
+
+    // Repeat initialization for reliable startup
+    lcd_cmd_high_nibble(0x30);
+
+    // Switch to 4-bit mode
+    lcd_cmd_high_nibble(0x20);
+
+    // Configure LCD: 4-bit, 2 lines, 5x8 font
+    lcd_cmd(0x28);
+
+    // Display ON, cursor OFF
+    lcd_cmd(0x0C);
+
+    // Clear display
+    lcd_cmd(0x01);
+
+    // Auto-increment cursor
+    lcd_cmd(0x06);
+
+    // Move cursor to the beginning of the first line
+    lcd_cmd(0x80);
 }
 
-void delay(int ms)
-{
-	int i,j;
-	for(i=0;i<=ms;i++)
-	for(j=0;j<=120;j++);
-}
-
-void lcd_msg(char *c)
-{
-	while(*c != 0)      //----Wait till all String are passed to LCD
-	lcd_dwr(*c++);		//----Send the String to LCD
-}
-
-void lcd_rig_sh()
-{
-	lcd_cmd(0x1C);      //----Command for right Shift
-	delay(400);
-}
-
-void lcd_lef_sh()
-{
-	lcd_cmd(0x18);      //----Command for Left Shift
-	delay(200);
+void lcd_display_string(char *string) {
+	while (*string != 0)                 //Wait till all String are passed to LCD
+		lcd_display_data(*string++);		//Send the String to LCD
 }
