@@ -3,6 +3,8 @@
  *  Author: fatma foley
  */
 
+#include "lcd.h"
+
 /*Generate Falling Edge*/
 void toggle() {
 	// Generate an Enable pulse (HIGH then LOW) to latch data into the LCD
