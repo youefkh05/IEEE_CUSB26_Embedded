@@ -8,7 +8,7 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "twi.h"
+#include "i2c.h"
 #include "lcd.h"
 
 int main(void)
