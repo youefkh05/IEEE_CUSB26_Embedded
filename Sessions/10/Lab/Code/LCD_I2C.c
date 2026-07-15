@@ -3,11 +3,6 @@
  *  Author: fatma foley
  */
 
-#include <avr/io.h>
-#include <util/delay.h>
-#include "lcd.h"
-#include "twi.h"
-
 /*Generate Falling Edge*/
 void toggle() {
 	// Generate an Enable pulse (HIGH then LOW) to latch data into the LCD
