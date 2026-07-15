@@ -4,6 +4,7 @@
  */ 
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #define  F_CPU 8000000UL  // CLK = 8 MHz
 
@@ -13,6 +14,6 @@ void i2c_init();
 void i2c_start();
 
 //I2C stop condition
-void i2c_write(char x);
+void i2c_sendByte(char data);
 
-char i2c_read();
+char i2c_recieveByte();
